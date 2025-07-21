@@ -8,3 +8,4 @@ const api = axios.create({
 export const getpost = () => {
    return api.get("/posts")
  }
+ 
