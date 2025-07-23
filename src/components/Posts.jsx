@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getpost } from '../api/PostApi';
+import { deletePost, getpost } from '../api/PostApi';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -8,6 +8,21 @@ const Posts = () => {
     setPosts(res.data);
     console.log(res.data);
   }
+  const handleDeleteBtn = async (id) => {
+     try {
+       const res = await deletePost(id)
+      if(res.status === 200) {
+        const updatedPosts = posts.filter(post => post.id !== id);
+        setPosts(updatedPosts);
+        console.log("Post deleted successfully");
+      }
+      
+     } catch (error) {
+      console.log("Error deleting post:", error);
+     }
+    
+  }
+
   useEffect(()=> {
     getPostData();
   },[])
@@ -20,8 +35,7 @@ const Posts = () => {
               <h2>{curElem.title}</h2>
               <p>{curElem.body}</p>
               <button>Edit</button>
-              <button>Delete</button>
-
+              <button onClick={()=>handleDeleteBtn(curElem.id)}>Delete</button>
             </li>
           })
          }
@@ -30,5 +44,4 @@ const Posts = () => {
     </>
   )
 }
-
 export default Posts
