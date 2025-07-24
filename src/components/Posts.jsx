@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { deletePost, getpost } from '../api/PostApi';
+import Form from './Form';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -22,12 +23,15 @@ const Posts = () => {
      }
     
   }
-
   useEffect(()=> {
     getPostData();
   },[])
   return (
     <>
+    <section>
+      <Form key={posts} setPosts={setPosts}/>
+    </section>
+
     <ol>
          {
           posts.map((curElem) => {
