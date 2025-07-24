@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { addPost } from "../api/PostApi";
 
-// eslint-disable-next-line no-unused-vars
-const Form = ({posts, setPosts}) => {
+const Form = ({ posts, setPosts }) => {
   const [addData, setAddData] = useState({
     title: "",
     body: "",
@@ -21,7 +21,10 @@ const Form = ({posts, setPosts}) => {
     try {
       const response = await addPost(addData);
       if (response.status === 201) {
-        setPosts(prevData => [...prevData, response.data]);
+        setPosts((prevData) => [
+          ...prevData,
+          { ...response.data, id: prevData.length + 1 },
+        ]);
       }
       console.log("Post added successfully:", response.data);
       setAddData({ title: "", body: "" });
