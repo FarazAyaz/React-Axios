@@ -3,31 +3,23 @@ import React, { useState } from "react";
 import { addPost } from "../api/PostApi";
 
 const Form = ({ posts, setPosts }) => {
-  const [addData, setAddData] = useState({
-    title: "",
-    body: "",
-  });
-  const handleInputChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setAddData({
-      ...addData,
-      [name]: value,
-    });
-  };
+
+  const [title ,setTitle] = useState("");
+  const [body ,setBody] = useState("");
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await addPost(addData);
-      if (response.status === 201) {
-        setPosts((prevData) => [
-          ...prevData,
-          { ...response.data, id: prevData.length + 1 },
-        ]);
-      }
+      const response = await addPost({title,body});
+      // if (response.status === 201) {
+      //   setPosts((prevData) => [
+      //     ...prevData,
+      //     { ...response.data, id: prevData.length + 1 },
+      //   ]);
+      // }
       console.log("Post added successfully:", response.data);
-      setAddData({ title: "", body: "" });
+      setTitle("");
+      setBody("");
     } catch (error) {
       console.error("Error adding post:", error);
     }
@@ -40,16 +32,16 @@ const Form = ({ posts, setPosts }) => {
           id="title"
           name="title"
           placeholder="Enter title"
-          value={addData.title}
-          onChange={handleInputChange}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <input
           type="text"
           id="body"
           name="body"
           placeholder="Enter body"
-          value={addData.body}
-          onChange={handleInputChange}
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
         />
         <button>ADD</button>
       </form>
