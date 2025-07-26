@@ -3,47 +3,51 @@ import { deletePost, getpost } from '../api/PostApi';
 import Form from './Form';
 
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
-   const getPostData = async ()=> {
-    const res = await getpost();
-    setPosts(res.data);
-    console.log(res.data);
+const [posts, setPosts] = useState([]);
+const [updateApi, setUpdateApi] = useState({});
+const getPost = async () => {
+  try {
+    const response = await getpost();
+    setPosts(response.data);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  } 
+   
+}
+const handleDeleteBtn = async (id) => {
+  try {
+    await deletePost(id);
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+  } catch (error) { 
+    console.error("Error deleting post:", error);
   }
-  const handleDeleteBtn = async (id) => {
-     try {
-       const res = await deletePost(id)
-      if(res.status === 200) {
-        const updatedPosts = posts.filter(post => post.id !== id);
-        setPosts(updatedPosts);
-        console.log("Post deleted successfully");
-      }
-      
-     } catch (error) {
-      console.log("Error deleting post:", error);
-     }
-    
-  }
-  useEffect(()=> {
-    getPostData();
-  },[])
+
+}
+const handleUpdateBtn = (curElement) => setUpdateApi(curElement);
+useEffect(()=> {
+  getPost();
+},[])
+
   return (
     <>
     <section>
-      <Form key={posts} setPosts={setPosts}/>
+      <Form key={posts} setPosts={setPosts} updateApi = {updateApi} setUpdateApi= {setUpdateApi} />
     </section>
 
-    <ol>
-         {
-          posts.map((curElem) => {
-            return <li key={curElem.id} curElem={curElem}>
-              <h2>{curElem.title}</h2>
-              <p>{curElem.body}</p>
-              <button>Edit</button>
-              <button onClick={()=>handleDeleteBtn(curElem.id)}>Delete</button>
+     <ol>
+      
+        {posts.map((curElement,index) => {
+          return (
+            <li key={curElement.id}>
+              <h3>{curElement.title}</h3>
+              <p>{curElement.body}</p>
+              <button onClick={()=>handleUpdateBtn(curElement)}>Edit</button>
+              <button onClick={()=>handleDeleteBtn(index)}>Delete</button>
             </li>
-          })
-         }
-    </ol>
+
+          )
+        })}
+     </ol>
       
     </>
   )

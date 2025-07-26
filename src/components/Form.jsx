@@ -1,22 +1,26 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addPost } from "../api/PostApi";
 
-const Form = ({ posts, setPosts }) => {
-
-  const [title ,setTitle] = useState("");
-  const [body ,setBody] = useState("");
+const Form = ({ posts, setPosts, updateApi, setUpdateApi }) => {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  //  get the updated data and add into input fields
+  useEffect(() => {
+    setTitle(updateApi?.title || "");
+    setBody(updateApi?.body || "");
+  }, [updateApi]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await addPost({title,body});
-      // if (response.status === 201) {
-      //   setPosts((prevData) => [
-      //     ...prevData,
-      //     { ...response.data, id: prevData.length + 1 },
-      //   ]);
-      // }
+      const response = await addPost({ title, body });
+      if (response.status === 201) {
+        setPosts((prevData) => [
+          ...prevData,
+          { ...response.data, id: prevData.length + 1 },
+        ]);
+      }
       console.log("Post added successfully:", response.data);
       setTitle("");
       setBody("");
