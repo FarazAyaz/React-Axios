@@ -47,6 +47,7 @@ const Form = ({ posts, setPosts, updateApi, setUpdateApi }) => {
           value={body}
           onChange={(e) => setBody(e.target.value)}
         />
+        <button>Edit</button>
         <button>ADD</button>
       </form>
     </>
