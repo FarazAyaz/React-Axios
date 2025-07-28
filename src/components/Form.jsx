@@ -1,31 +1,59 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { addPost } from "../api/PostApi";
+import { addPost, updatePost } from "../api/PostApi";
 
 const Form = ({ posts, setPosts, updateApi, setUpdateApi }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   //  get the updated data and add into input fields
+  let isEmpty = Object.keys(updateApi).length === 0;
   useEffect(() => {
-    setTitle(updateApi?.title || "");
-    setBody(updateApi?.body || "");
+    if (!isEmpty) {
+      setTitle(updateApi?.title || "");
+      setBody(updateApi?.body || "");
+    }
   }, [updateApi]);
+
+  //  Form submission
+  const updatePostData = async () => {
+    try {
+      const res = await updatePost(updateApi.id, title, body);
+      if (res.status === 200) {
+        setPosts((prev) =>
+          prev.map((curElem) =>
+            curElem.id === res.data.id ? res.data : curElem
+          )
+        );
+        setTitle("");
+        setBody("");
+        setUpdateApi({});
+        console.log("Post updated successfully:", res.data);
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await addPost({ title, body });
-      if (response.status === 201) {
-        setPosts((prevData) => [
-          ...prevData,
-          { ...response.data, id: prevData.length + 1 },
-        ]);
+    const action = e.nativeEvent.submitter.value;
+    if (action === "Add") {
+      try {
+        const response = await addPost({ title, body });
+        if (response.status === 201) {
+          setPosts((prevData) => [
+            ...prevData,
+            { ...response.data, id: prevData.length + 1 },
+          ]);
+          setTitle("");
+          setBody("");
+          console.log("Post added successfully:", response.data);
+        }
+      } catch (error) {
+        console.error("Error adding post:", error);
       }
-      console.log("Post added successfully:", response.data);
-      setTitle("");
-      setBody("");
-    } catch (error) {
-      console.error("Error adding post:", error);
+    } else if (action === "Edit") {
+      await updatePostData();
     }
   };
   return (
@@ -47,8 +75,9 @@ const Form = ({ posts, setPosts, updateApi, setUpdateApi }) => {
           value={body}
           onChange={(e) => setBody(e.target.value)}
         />
-        <button>Edit</button>
-        <button>ADD</button>
+        <button type="submit" value={isEmpty ? "Add" : "Edit"}>
+          {isEmpty ? "Add" : "Edit"}
+        </button>
       </form>
     </>
   );
