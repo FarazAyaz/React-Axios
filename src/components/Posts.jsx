@@ -26,7 +26,7 @@ const Posts = () => {
     <>
       {posts.map((curPost) => {
         return (
-          <div key={curPost.id}>
+          <div key={curPost.id} className="container">
             <h2>{curPost.title}</h2>
             <p>{curPost.body}</p>
             <button>Edit</button>
