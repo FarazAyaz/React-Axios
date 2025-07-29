@@ -11,7 +11,7 @@ const Posts = () => {
     getPostData();
   }, []);
 
-  const handleDeleteBtn = async (id) => {
+  const handleDeleteBtn = async (id) => { 
     try {
       const response = await deletePost(id);
       if (response.status === 200) {
@@ -21,20 +21,22 @@ const Posts = () => {
       console.error("Error deleting post:", error);
     }
   };
-
+  
   return (
-    <>
-      {posts.map((curPost) => {
-        return (
-          <div key={curPost.id} className="container">
-            <h2>{curPost.title}</h2>
-            <p>{curPost.body}</p>
-            <button>Edit</button>
-            <button onClick={() => handleDeleteBtn(curPost.id)}>Delete</button>
-          </div>
-        );
-      })}
-    </>
+   <div className="container">
+  <div className="card-list">
+    {posts.map(post => (
+      <div className="card" key={post.id}>
+        <div className="card-title">{post.title}</div>
+        <div className="card-desc">{post.body}</div>
+        <div className="card-actions">
+          <button>Edit</button>
+          <button onClick={()=> handleDeleteBtn(post.id)}>Delete</button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
   );
 };
 
