@@ -1,3 +1,61 @@
+/* Form Component Styles */
+.form {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 32px 24px;
+  max-width: 700px;
+  margin: 32px auto;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.form label {
+  min-width: 60px;
+  margin-bottom: 0;
+}
+.form input[type="text"],
+.form textarea {
+  flex: 1 1 180px;
+  min-width: 120px;
+}
+.form label {
+  font-weight: 500;
+  color: #232f3e;
+  margin-bottom: 4px;
+}
+.form input[type="text"],
+.form textarea {
+  padding: 10px 14px;
+  border: 1px solid #ffb88c;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+.form input[type="text"]:focus,
+.form textarea:focus {
+  border-color: #ff7e5f;
+  outline: none;
+}
+.form button {
+  background: linear-gradient(90deg, #ff7e5f 0%, #feb47b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 126, 95, 0.12);
+  transition: background 0.2s, transform 0.2s;
+}
+.form button:hover {
+  background: linear-gradient(90deg, #feb47b 0%, #ff7e5f 100%);
+  transform: translateY(-2px) scale(1.04);
+}
 body {
   background: #f3f3f3;
   font-family: "Amazon Ember", "Segoe UI", "Roboto", Arial, sans-serif;

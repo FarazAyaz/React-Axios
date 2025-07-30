@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { deletePost, getpost } from "../api/PostApi";
+import Form from "./Form";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -11,7 +12,7 @@ const Posts = () => {
     getPostData();
   }, []);
 
-  const handleDeleteBtn = async (id) => { 
+  const handleDeleteBtn = async (id) => {
     try {
       const response = await deletePost(id);
       if (response.status === 200) {
@@ -21,22 +22,25 @@ const Posts = () => {
       console.error("Error deleting post:", error);
     }
   };
-  
+
   return (
-   <div className="container">
-  <div className="card-list">
-    {posts.map(post => (
-      <div className="card" key={post.id}>
-        <div className="card-title">{post.title}</div>
-        <div className="card-desc">{post.body}</div>
-        <div className="card-actions">
-          <button>Edit</button>
-          <button onClick={()=> handleDeleteBtn(post.id)}>Delete</button>
-        </div>
+    <div className="container">
+      <section>
+        <Form posts={posts} setPosts={setPosts} />
+      </section>
+      <div className="card-list">
+        {posts.map((post) => (
+          <div className="card" key={post.id}>
+            <div className="card-title">{post.title}</div>
+            <div className="card-desc">{post.body}</div>
+            <div className="card-actions">
+              <button>Edit</button>
+              <button onClick={() => handleDeleteBtn(post.id)}>Delete</button>
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-</div>
+    </div>
   );
 };
 
