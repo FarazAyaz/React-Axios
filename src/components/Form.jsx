@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addPost } from "../api/PostApi";
 
-const Form = ({ posts, setPosts }) => {
-  const [addData, setAddData] = useState({
-    title: "",
-    body: "",
-  });
+const Form = ({
+  posts,
+  setPosts,
+  updateApiData,
+  setAddData,
+  addData,
+ 
+}) => {
+  useEffect(() => {
+    if (updateApiData && Object.keys(updateApiData).length > 0) {
+      setAddData({
+        title: updateApiData.title || "",
+        body: updateApiData.body || "",
+      });
+    }
+  }, [updateApiData]);
+
   const handleInputChange = (event) => {
     setAddData((prev) => {
       return {
