@@ -30,7 +30,7 @@ const Form = ({
     const newData = {
       id: new Date().getTime().toString(),
       title: addData.title,
-      body: addData.body,
+      body: addData.body ,
     };
 
     const res = await addPost(newData);
