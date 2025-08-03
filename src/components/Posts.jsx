@@ -17,15 +17,15 @@ const Posts = () => {
     getPostData();
   }, []);
 
-  const handleUpdatePost = async (post) => {
-    const res = await updatePost(post.id, {
-      title: addData.title,
-      body: addData.body,
-    });
-    setPosts((prevPosts) =>
-      prevPosts.map((p) => (p.id === post.id ? { ...res.data } : p))
-    );
-  };
+  // const handleUpdatePost = async (post) => {
+  //   const res = await updatePost(post.id, {
+  //     title: addData.title,
+  //     body: addData.body,
+  //   });
+  //   setPosts((prevPosts) =>
+  //     prevPosts.map((p) => (p.id === post.id ? { ...res.data } : p))
+  //   );
+  // };
 
   const handleDeleteBtn = async (id) => {
     try {
@@ -36,6 +36,20 @@ const Posts = () => {
     } catch (error) {
       console.error("Error deleting post:", error);
     }
+  };
+
+  const handlePostUpdate = (id) => {
+    setPosts((pre) =>
+      pre.map((currentElement) => {
+        return currentElement.id === id
+          ? {
+              ...currentElement,
+              title:addData.title,
+              body: addData.body,
+            }
+          : currentElement;
+      })
+    );
   };
 
   return (
@@ -51,7 +65,6 @@ const Posts = () => {
         />
       </section>
       <ol className="card-list">
-
         {posts.map((post) => {
           const { id, title, body } = post;
           return (
@@ -59,7 +72,7 @@ const Posts = () => {
               <div className="card-title">{title} </div>
               <div className="card-desc">{body} </div>
               <div className="card-actions">
-                <button onClick={() => handleUpdatePost(post)}>Edit</button>
+                <button onClick={() => handlePostUpdate(id)}>Edit</button>
                 <button onClick={() => handleDeleteBtn(id)}>Delete</button>
               </div>
             </li>
