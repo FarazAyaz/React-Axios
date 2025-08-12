@@ -29,7 +29,7 @@ const Posts = () => {
 
   const handleDeleteBtn = async  (id) => {
     try {
-      const response = await deletePost(id);
+      const response =  await deletePost(id);
       if (response.status === 200) {
         setPosts(posts.filter((post) => post.id !== id));
       }
